@@ -113,8 +113,11 @@
         <header-file src="src/ios/libs/TZVideoPlayerController.h" />
         <source-file src="src/ios/libs/TZVideoPlayerController.m"/>
 
-        <header-file src="src/ios/libs/UIView+Layout.h" />
-        <source-file src="src/ios/libs/UIView+Layout.m"/>
+        <header-file src="src/ios/libs/UIView+TZLayout.h" />
+        <source-file src="src/ios/libs/UIView+TZLayout.m"/>
+        
+        <header-file src="src/ios/libs/TZVideoCropController.h" />
+        <source-file src="src/ios/libs/TZVideoCropController.m"/>
 
         <resource-file src="src/ios/libs/TZImagePickerController.bundle" />
 

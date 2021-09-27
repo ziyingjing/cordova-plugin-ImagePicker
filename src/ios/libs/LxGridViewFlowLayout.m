@@ -5,7 +5,7 @@
 
 #import "LxGridViewFlowLayout.h"
 #import "TZTestCell.h"
-#import "UIView+Layout.h"
+#import "UIView+TZLayout.h"
 
 #define stringify   __STRING
 
@@ -213,13 +213,13 @@ CG_INLINE CGPoint CGPointOffset(CGPoint point, CGFloat dx, CGFloat dy)
 
              _sourceItemCollectionViewCellCenter = sourceCollectionViewCell.center;
             
-            LxGridViewFlowLayout *weakSelf = self;
+            typeof(self) __weak weakSelf = self;
             [UIView animateWithDuration:0
                                   delay:0
                                 options:UIViewAnimationOptionBeginFromCurrentState
                              animations:^{
 
-                                 LxGridViewFlowLayout *strongSelf = weakSelf;
+                                 typeof(self) __strong strongSelf = weakSelf;
                                  if (strongSelf) {
                                      highlightedSnapshotView.alpha = 0;
                                      snapshotView.alpha = 1;
@@ -227,12 +227,12 @@ CG_INLINE CGPoint CGPointOffset(CGPoint point, CGFloat dx, CGFloat dy)
                              }
                              completion:^(BOOL finished) {
                                  
-                                LxGridViewFlowLayout *strongSelf = weakSelf;
+                                 typeof(self) __strong strongSelf = weakSelf;
                                  if (strongSelf) {
                                      [highlightedSnapshotView removeFromSuperview];
                                      
                                      if ([strongSelf.delegate respondsToSelector:@selector(collectionView:layout:didBeginDraggingItemAtIndexPath:)]) {
-                                         [strongSelf.delegate collectionView:strongSelf.collectionView layout:strongSelf didBeginDraggingItemAtIndexPath:_movingItemIndexPath];
+                                         [strongSelf.delegate collectionView:strongSelf.collectionView layout:strongSelf didBeginDraggingItemAtIndexPath:self->_movingItemIndexPath];
                                      }
                                  }
                              }];
@@ -262,24 +262,24 @@ CG_INLINE CGPoint CGPointOffset(CGPoint point, CGFloat dx, CGFloat dy)
                 
                 _longPressGestureRecognizer.enabled = NO;
                 
-                 LxGridViewFlowLayout *weakSelf = self;
+                typeof(self) __weak weakSelf = self;
                 [UIView animateWithDuration:0.2
                                       delay:0
                                     options:UIViewAnimationOptionBeginFromCurrentState
                                  animations:^{
-                                      LxGridViewFlowLayout *strongSelf = weakSelf;
+                                     typeof(self) __strong strongSelf = weakSelf;
                                      if (strongSelf) {
-                                         _beingMovedPromptView.center = movingItemCollectionViewLayoutAttributes.center;
+                                         self->_beingMovedPromptView.center = movingItemCollectionViewLayoutAttributes.center;
                                      }
                                  }
                                  completion:^(BOOL finished) {
 
-                                     _longPressGestureRecognizer.enabled = YES;
+                                     self->_longPressGestureRecognizer.enabled = YES;
                                      
-                                      LxGridViewFlowLayout *strongSelf = weakSelf;
+                                     typeof(self) __strong strongSelf = weakSelf;
                                      if (strongSelf) {
-                                         [_beingMovedPromptView removeFromSuperview];
-                                         _beingMovedPromptView = nil;
+                                         [self->_beingMovedPromptView removeFromSuperview];
+                                         self->_beingMovedPromptView = nil;
                                          [strongSelf invalidateLayout];
                                          
                                          if ([strongSelf.delegate respondsToSelector:@selector(collectionView:layout:didEndDraggingItemAtIndexPath:)]) {
@@ -325,9 +325,9 @@ CG_INLINE CGPoint CGPointOffset(CGPoint point, CGFloat dx, CGFloat dy)
             
             _movingItemIndexPath = destinationIndexPath;
             
-             LxGridViewFlowLayout *weakSelf = self;
+            typeof(self) __weak weakSelf = self;
             [self.collectionView performBatchUpdates:^{
-                 LxGridViewFlowLayout *strongSelf = weakSelf;
+                typeof(self) __strong strongSelf = weakSelf;
                 if (strongSelf) {
                     if (sourceIndexPath && destinationIndexPath) {
                         [strongSelf.collectionView deleteItemsAtIndexPaths:@[sourceIndexPath]];
@@ -335,7 +335,7 @@ CG_INLINE CGPoint CGPointOffset(CGPoint point, CGFloat dx, CGFloat dy)
                     }
                 }
             } completion:^(BOOL finished) {
-                 LxGridViewFlowLayout *strongSelf = weakSelf;
+                typeof(self) __strong strongSelf = weakSelf;
                 if ([strongSelf.dataSource respondsToSelector:@selector(collectionView:itemAtIndexPath:didMoveToIndexPath:)]) {
                     [strongSelf.dataSource collectionView:strongSelf.collectionView itemAtIndexPath:sourceIndexPath didMoveToIndexPath:destinationIndexPath];
                 }
