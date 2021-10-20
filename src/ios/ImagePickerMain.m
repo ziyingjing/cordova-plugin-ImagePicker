@@ -237,6 +237,18 @@
         __block NSInteger index = idx;
         
         
+        __block BOOL isHEIF = NO;
+        NSArray *resourceList = [PHAssetResource assetResourcesForAsset:asset];
+        [resourceList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            PHAssetResource *resource = obj;
+            NSString *UTI = resource.uniformTypeIdentifier;
+            if ([UTI isEqualToString:@"public.heif"] || [UTI isEqualToString:@"public.heic"]) {
+                isHEIF = YES;
+                *stop = YES;
+            }
+        }];
+        
+        
         [[TZImageManager manager] getOriginalPhotoDataWithAsset:asset completion:^(NSData *data, NSDictionary *info, BOOL isDegraded) {
             
             __block NSString *fileName = [self getFileNameForAsset:asset];
@@ -244,6 +256,17 @@
                 NSString *newExtension = [info valueForKey:@"PHImageExtension"];
                 fileName = [fileName stringByAppendingString:newExtension];
             }
+            
+            if (isHEIF) {
+                CIImage *ciImage = [CIImage imageWithData:data];
+                CIContext *context = [CIContext context];
+                data = [context JPEGRepresentationOfImage:ciImage colorSpace:ciImage.colorSpace options:@{}];
+                if ([fileName componentsSeparatedByString:@"."].count == 2) {
+                    fileName = [[fileName componentsSeparatedByString:@"."].firstObject stringByAppendingString:@".JPG"];
+                }
+            }
+            
+            
             NSString *path = [self saveNSDataToFile:data withName:fileName];
             NSDictionary* fileObj = @{
                                       @"path": path,
