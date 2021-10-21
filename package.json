@@ -9,10 +9,7 @@
       "android"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ziyingjing/cordova-plugin-ImagePicker"
-  },
+  "repository": "github:ziyingjing/cordova-plugin-ImagePicker",
   "keywords": [
     "cordova",
     "cordova-ios",
